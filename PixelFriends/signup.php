@@ -24,7 +24,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $username_err .= 'Username can only contain letters, numbers, and underscores.';
     } 
     else {
-        $sql = "SELECT id FROM users WHERE username = ?";
+        $sql = "SELECT id FROM users WHERE user_name = ?";
         if($stmt = mysqli_prepare($link, $sql)){
             mysqli_stmt_bind_param($stmt, "s", $param_username);
             $param_username = trim($_POST["username"]);
@@ -91,7 +91,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             empty($email_err) && 
             empty($password_err) && 
             empty($confirm_password_err)){
-        $sql = "INSERT INTO users (name, username, email, password) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO users (name, user_name, email, password) VALUES (?, ?, ?, ?)";
         if($stmt = mysqli_prepare($link, $sql)){
             mysqli_stmt_bind_param($stmt, "ssss", $param_name, $param_username, $param_email, $param_password);
             $param_name = $name;
@@ -110,59 +110,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 }
 ?>
 
-<!DOCTYPE html>
-<html>
-
-<head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
-  <title> Pixel Friends - Sign Up </title>
-  <meta content="" name="description">
-  <meta content="" name="keywords">
-
-  <!-- Favicons -->
-  <link href="assets/img/favicon.png" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
-
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
-
-  <!-- Vendor CSS Files -->
-  <link href="assets/vendor/animate.css/animate.min.css" rel="stylesheet">
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
-
-  <!-- Template Main CSS File -->
-  <link href="assets/css/style.css" rel="stylesheet">
-
-</head>
-
-<body>
-
-  <!-- ======= Header ======= -->
-  <header id="header" class="fixed-top d-flex align-items-center">
-    <div class="container d-flex align-items-center justify-content-between">
-      <h1 class="logo"><a href="index.php"><img src="assets/img/logo.png" alt="" class="img-fluid"> Pixel Friends </a></h1>
-      <nav id="navbar" class="navbar">
-        <ul>
-          <li><a class="nav-link scrollto" href="index.php">Home</a></li>
-          <li><a class="nav-link scrollto" href="index.php#about">About</a></li>
-          <li><a class="nav-link scrollto" href="index.php#services">What We Offer</a></li>
-          <li><a class="nav-link scrollto" href="index.php#joinus">Join Us</a></li>
-          <li><a class="nav-link scrollto" href="index.php#contact">Contact</a></li>
-          <li><a class="getstarted" href="auth.php">Log In</a></li>
-          <li><a class="getstarted" href="signup.php">Sign Up</a></li>
-        </ul>
-        <i class="bi bi-list mobile-nav-toggle"></i>
-      </nav><!-- .navbar -->
-    </div>
-  </header><!-- End Header -->
+<?php
+include 'components/header_index.php';
+?>
 
   <!-- ======= Hero Section ======= -->
   <section id="hero">
@@ -189,48 +139,52 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     </div>
   </section><!-- End Hero -->
 
-  <section id="create" class="about">
-      <div class="container">
-
+  <section id="enter" class="about" style="background-color: #b0b0b0">
+    <div class="container">
       <div class="d-flex justify-content-center">
-                <i style="font-size:100px; margin: 30px" class="fa-solid fa-user-plus"></i>
-                <div class="wrapper">
-                <h1>Sign Up</h1>
-                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                        <div class="form-group">
-                            <label>Full Name</label>
-                            <input type="text" name="name" placeholder="Full Name..." class="form-control <?php echo (!empty($name_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $name; ?>">
-                            <span class="invalid-feedback"><?php echo $name_err; ?></span>
-                        </div>     
-                        <div class="form-group">
-                            <label>Username</label>
-                            <input type="text" name="username" placeholder="Username..." class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $username; ?>">
-                            <span class="invalid-feedback"><?php echo $username_err; ?></span>
-                        </div>     
-                        <div class="form-group">
-                            <label>E-mail</label>
-                            <input type="email" name="email" placeholder="E-mail..." class="form-control <?php echo (!empty($email_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $email; ?>">
-                            <span class="invalid-feedback"><?php echo $email_err; ?></span>
-                        </div>     
-                        <div class="form-group">
-                            <label>Password</label>
-                            <input type="password" name="password" placeholder="Password..." class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $password; ?>">
-                            <span class="invalid-feedback"><?php echo $password_err; ?></span>
-                        </div>     
-                        <div class="form-group">
-                            <label>Confirm Password</label>
-                            <input type="password" name="confirm_password" placeholder="Confirm Password..." class="form-control <?php echo (!empty($confirm_password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $confirm_password; ?>">
-                            <span class="invalid-feedback"><?php echo $confirm_password_err; ?></span>
-                        </div>    
-                        <div class="form-group">
-                            <input style="margin-top: 20px;" type="submit" class="btn btnset btn-primary" value="Sign Up">
-                            <input style="margin-top: 20px;" type="reset" class="btn btn-secondary ml-2" value="Reset">
-                        </div>     
-                    </form>
-                    <p>Already have an account? <a href="login.php">Log In</a>.</p>
-                </div>  
-            </div>  
-
+        <div class="wrapper">
+          <h1>Sign Up</h1>
+            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+              <br>  
+              <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" name="name" placeholder="Full Name..." class="form-control <?php echo (!empty($name_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $name; ?>">
+                <span class="invalid-feedback"><?php echo $name_err; ?></span>
+              </div>     
+              <br>
+              <div class="form-group">
+                <label>Username</label>
+                <input type="text" name="username" placeholder="Username..." class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $username; ?>">
+                <span class="invalid-feedback"><?php echo $username_err; ?></span>
+              </div> 
+              <br>    
+              <div class="form-group">
+                <label>E-mail</label>
+                <input type="email" name="email" placeholder="E-mail..." class="form-control <?php echo (!empty($email_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $email; ?>">
+                <span class="invalid-feedback"><?php echo $email_err; ?></span>
+              </div>   
+              <br>  
+              <div class="form-group">
+                <label>Password</label>
+                <input type="password" name="password" placeholder="Password..." class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $password; ?>">
+                <span class="invalid-feedback"><?php echo $password_err; ?></span>
+              </div>  
+              <br>   
+              <div class="form-group">
+                <label>Confirm Password</label>
+                <input type="password" name="confirm_password" placeholder="Confirm Password..." class="form-control <?php echo (!empty($confirm_password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $confirm_password; ?>">
+                <span class="invalid-feedback"><?php echo $confirm_password_err; ?></span>
+              </div>  
+              <br>  
+              <div class="form-group">
+                <input style="margin-top: 20px;" type="submit" class="btn btnset btn-primary" value="Sign Up" href="login.php">
+                <input style="margin-top: 20px;" type="reset" class="btn btn-secondary ml-2" value="Reset">
+              </div>     
+            </form>
+            <br>
+            <p>Already have an account? <a href="login.php">Log In</a>.</p>
+          </div>  
+        </div>  
       </div>
     </section><!-- End About Section -->
 
